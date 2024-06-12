@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\TimesheetController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::resource('timesheets',TimesheetController::class);
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('timesheets.index');
 });

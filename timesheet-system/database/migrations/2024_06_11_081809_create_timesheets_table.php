@@ -17,6 +17,7 @@ return new class extends Migration
             $table->date('date');
             $table->date('check_in_time');
             $table->date('check_out_time');
+            $table->float('worked_hours');
             $table->string('description')->nullable();
             $table->timestamps();
         });
