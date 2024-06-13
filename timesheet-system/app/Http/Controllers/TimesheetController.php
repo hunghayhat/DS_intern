@@ -39,4 +39,23 @@ class TimesheetController extends Controller
         $this-> authorize('view',$timesheet);
         return view('timesheets.show', compact('timesheet'));
     }
+
+    public function edit (Timesheet $timesheet) {
+        $this->authorize('update',$timesheet);
+        return view('timesheets.edit', compact('timesheet'));
+    }
+
+    public function update (Timesheet $timesheet, Request $request){
+        $this -> authorize('update', $timesheet);
+
+        $request-> validate([
+            'date' => 'required|date',
+            'hours_worked' => 'required|float',
+            'description' => 'nullable|string'
+        ]);
+
+        $timesheet->update($request->all());
+
+        return redirect()->route('timesheets.index');
+    }
 }
