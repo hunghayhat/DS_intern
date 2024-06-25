@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\TimesheetController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,7 +13,17 @@ use App\Http\Controllers\TimesheetController;
 |
 */
 
-Route::resource('timesheets',TimesheetController::class);
-Route::get('/', function () {
-    return redirect()->route('timesheets.index');
+Route::get('/', function(){
+    $html = '<h1>Hoc lap trinh</h1>';
+    return $html ;
+});
+
+Route::get('unicode',function(){
+    return 'Phuong thuc Post cua path /unicode';
+
+});
+
+
+Route::post('/unicode',function(){
+    return 'Phuong thuc Post cua path /unicode';
 });
