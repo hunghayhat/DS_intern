@@ -19,11 +19,20 @@ Route::get('/', function(){
 });
 
 Route::get('unicode',function(){
-    return 'Phuong thuc Post cua path /unicode';
+    return view('form');
+    // return 'Phuong thuc Post cua path /unicode';
 
 });
 
 
-Route::post('/unicode',function(){
+Route::post('unicode',function(){
     return 'Phuong thuc Post cua path /unicode';
+});
+
+Route::put('unicode', function(){
+    return 'Phuong thuc put';
+});
+
+Route::patch('unicode', function(){
+    return 'Phuong thuc patch';
 });
