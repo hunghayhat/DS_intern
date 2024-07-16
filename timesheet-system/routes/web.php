@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+use App\Http\Controllers\CategoriesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,26 +15,25 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function(){
-    $html = '<h1>Hoc lap trinh</h1>';
-    return $html ;
-});
+//Client route
 
-Route::get('unicode',function(){
-    return view('form');
-    // return 'Phuong thuc Post cua path /unicode';
+Route::prefix('categories')-> group(function(){
+    Route::get('/',[CategoriesController::class,'index']);
 
-});
+    //Lấy chi tiết 1 chuyên mục (áp dụng show form sửa chuyên mục)
+    Route::get('/edit/{id}',[CategoriesController::class,'getCategory']);
+
+    //Update chuyên mục
+    Route::post('/edit/{id}',[CategoriesController::class,'updateCategory']);
+
+    //Hiển thị form add dữ liệu
+    Route::get('/add',[CategoriesController::class,'addCategory']);
+
+    //Xử lý thêm chuyên mục
+    Route::get('/add',[CategoriesController::class,'handleAddCategory']);
+
+    //Xoá chuyên mục
+    Route::delete('/delete{id}',[CategoriesController::class,'deleteCategory']);
 
 
-Route::post('unicode',function(){
-    return 'Phuong thuc Post cua path /unicode';
-});
-
-Route::put('unicode', function(){
-    return 'Phuong thuc put';
-});
-
-Route::patch('unicode', function(){
-    return 'Phuong thuc patch';
 });
