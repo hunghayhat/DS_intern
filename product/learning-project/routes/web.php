@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ExampleController;
+use App\Http\Controllers\UserController;
 
 
 Route::get('/', [ExampleController::class, "homepage"] );
@@ -22,3 +23,5 @@ require __DIR__.'/auth.php';
 Route::get('/about', function() {
     return view('single-post');
 });
+
+Route::post('/register', [UserController::class, 'register']);
