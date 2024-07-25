@@ -20,8 +20,7 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
-Route::get('/about', function() {
-    return view('single-post');
-});
+Route::get('/', [UserController::class, 'showCorrectHomepage']);
 
 Route::post('/register', [UserController::class, 'register']);
+Route::post('/login', [UserController::class, 'login']);
