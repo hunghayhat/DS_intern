@@ -9,6 +9,15 @@ use Symfony\Contracts\Service\Attribute\Required;
 
 class PostController extends Controller
 {
+    public function delete(Request $request, Post $post) {
+        if($request->user()->cannot('delete', $post)) {
+            return('You can not do that!');
+        }
+        $post->delete();
+
+        return redirect('/profile/'.auth()->user()->username)->with('success', 'Post deleted successfully');
+    }
+
     public function showCreateForm()
     {
         return view('create-post');
@@ -30,6 +39,7 @@ class PostController extends Controller
 
     public function showSinglePost(Post $post)
     {
+        
         $ourHTLM = strip_tags(Str::markdown($post->body), '<p><ul><ol><li><strong><em><h3><br>');
         $post['body'] = $ourHTLM;
         return view('single-post', ['post' => $post]);
