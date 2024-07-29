@@ -9,9 +9,9 @@ use App\Http\Controllers\UserController;
 
 Route::get('/', [ExampleController::class, "homepage"] );
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/', function () {
+    return view('/');
+})->middleware(['auth', 'verified'])->name('/');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -21,7 +21,7 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
-Route::get('/', [UserController::class, 'showCorrectHomepage']);
+Route::get('/', [UserController::class, 'showCorrectHomepage'])->name('login');
 
 Route::post('/register', [UserController::class, 'register']);
 Route::post('/login', [UserController::class, 'login']);
@@ -31,3 +31,6 @@ Route::post('/logout', [UserController::class, 'logout']);
 Route::get('/create-post', [PostController::class, 'showCreateForm']);
 Route::post('/create-post', [PostController::class, 'storeNewPost']);
 Route::get('/post/{post}', [PostController::class, 'showSinglePost']);
+
+//Profile related routes:
+Route::get('/profile/{user:username}',[UserController::class,'profile']);

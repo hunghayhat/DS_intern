@@ -8,16 +8,22 @@ use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
-    public function logout () {
-        auth()->logout();
-        return redirect('/')->with('success','Logged out!');
+    public function profile(User $user)
+    {
+        return view('profile-posts', ['username' => $user->username, 'posts' => $user->posts()->latest()->get(), 'postCount'=>$user->posts()->count()]);
     }
 
-    public function showCorrectHomepage() {
-        if(auth()->check()) {
+    public function logout()
+    {
+        auth()->logout();
+        return redirect('/')->with('success', 'Logged out!');
+    }
+
+    public function showCorrectHomepage()
+    {
+        if (auth()->check()) {
             return view('homepage-feed');
-        }   
-        else return view('homepage');
+        } else return view('homepage');
     }
 
     public function register(Request $request)
@@ -43,12 +49,14 @@ class UserController extends Controller
         ]);
 
         if (auth()->attempt(
-            ['username' => $incomingFields['loginusername'],
-             'password'=> $incomingFields['loginpassword']])) {
-                $request->session()->regenerate();
+            [
+                'username' => $incomingFields['loginusername'],
+                'password' => $incomingFields['loginpassword']
+            ]
+        )) {
+            $request->session()->regenerate();
             return redirect('/')->with('success', 'You have succeffully logged in!');
-        }
-        else {
+        } else {
             return redirect('/')->with('failure', 'Invalid login.');
         }
     }
