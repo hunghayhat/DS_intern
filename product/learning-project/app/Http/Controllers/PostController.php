@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Http\Requests\PostRequest;
 use Symfony\Contracts\Service\Attribute\Required;
 
 class PostController extends Controller
@@ -22,15 +23,11 @@ class PostController extends Controller
         return view('edit-post',['post'=>$post]);
     }
 
-    public function update(Request $request, Post $post) {
+    public function update(PostRequest $request, Post $post) {
         if($request->user()->cannot('update', $post)) {
             return('You can not do that!');
         }
-        $incomingFields = $request->validate([
-            'title' => 'required',
-            'body' => 'required'
-        ]);
-
+        $incomingFields = $request->validated();
         $incomingFields['title'] = strip_tags($incomingFields['title']);
         $incomingFields['body'] = strip_tags($incomingFields['body']);
 
@@ -44,12 +41,9 @@ class PostController extends Controller
         return view('create-post');
     }
 
-    public function storeNewPost(Request $request)
+    public function storeNewPost(PostRequest $request)
     {
-        $incomingFields = $request->validate([
-            'title' => 'required',
-            'body' => 'required'
-        ]);
+        $incomingFields = $request->validated();
         $incomingFields['title'] = strip_tags($incomingFields['title']);
         $incomingFields['body'] = strip_tags($incomingFields['body']);
         $incomingFields['user_id'] = auth()->id();
