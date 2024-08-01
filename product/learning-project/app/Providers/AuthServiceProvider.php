@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-// use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Gate;
 
 use App\Models\Post;
 use App\Policies\PostPolicy;
@@ -22,8 +22,11 @@ class AuthServiceProvider extends ServiceProvider
     /**
      * Register any authentication / authorization services.
      */
-    public function boot(): void
+    public function boot()
     {
-        //
+        $this->registerPolicies();
+        Gate::define('visitAdminPages', function($user){
+            return $user->isAdmin === 1;
+        });
     }
 }

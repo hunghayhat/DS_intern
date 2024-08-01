@@ -15,8 +15,9 @@
   <body>
     <header class="header-bar mb-3">
       <div class="container d-flex flex-column flex-md-row align-items-center p-3">
-        <h4 class="my-0 mr-md-auto font-weight-normal"><a href="/" class="text-white">Timesheet</a></h4>
-        <form action="#" method="POST" class="mb-0 pt-2 pt-md-0">
+        <h4 class="my-0 mr-md-auto font-weight-normal"><a href="/" class="text-white">Our</a></h4>
+        <h1>aaaaaaaaaa</h1>
+        {{-- <form action="#" method="POST" class="mb-0 pt-2 pt-md-0">
           <div class="row align-items-center">
             <div class="col-md mr-0 pr-md-0 mb-3 mb-md-0">
               <input name="loginusername" class="form-control form-control-sm input-dark" type="text" placeholder="Username" autocomplete="off" />
@@ -25,9 +26,9 @@
               <input name="loginpassword" class="form-control form-control-sm input-dark" type="password" placeholder="Password" />
             </div>
             <div class="col-md-auto">
-              <button class="btn btn-primary btn-sm">Sign In</button>
+              <button class="btn btn-primary btn-sm"></button>
             </div>
           </div>
-        </form>
+        </form> --}}
       </div>
     </header>
