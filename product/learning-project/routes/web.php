@@ -25,8 +25,8 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__ . '/auth.php';
 
+//User related routes
 Route::get('/', [UserController::class, 'showCorrectHomepage'])->name('login');
-
 Route::post('/register', [UserController::class, 'register']);
 Route::post('/login', [UserController::class, 'login']);
 Route::post('/logout', [UserController::class, 'logout']);
@@ -43,3 +43,5 @@ Route::get('/post/{post}/edit', [PostController::class, 'edit']);
 
 //Profile related routes:
 Route::get('/profile/{user:username}', [UserController::class, 'profile']);
+Route::get('/manage-avatar', [UserController::class, 'showAvatarForm']);
+Route::post('/manage-avatar', [UserController::class, 'storeAvatar']);
