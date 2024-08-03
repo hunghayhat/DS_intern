@@ -4,18 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
-use Intervention\Image\Drivers\Gd\Driver;
+use App\Http\Controllers\Controller;
 use Intervention\Image\ImageManager;
-use League\Flysystem\StorageAttributes;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class UserController extends Controller
 {
     public function storeAvatar(Request $request)
     {
         $request->validate([
-            'avatar' => 'required|image|max:3000'
+            'avatar' => 'required|image|max:90000'
         ]);
 
         $user = auth()->user();
@@ -34,7 +34,7 @@ class UserController extends Controller
         $user->save();
 
         if ($oldAvatar != "/fallback-avatar.jpg") {
-            Storage::delete(str_replace("/storage/","public/", $oldAvatar));
+            Storage::delete(str_replace("/storage/", "public/", $oldAvatar));
         }
         return back()->with('success', 'Avatar changed successfully!');
     }

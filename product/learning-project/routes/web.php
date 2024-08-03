@@ -2,10 +2,11 @@
 
 use Illuminate\Support\Facades\Gate;
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\FollowController;
+use App\Http\Controllers\ProfileController;
 
 
 Route::get('/', function () {
@@ -24,6 +25,10 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__ . '/auth.php';
+
+//Follow related routes
+Route::post('create-follow/{user: username}',[FollowController::class, 'createFollow']);
+Route::delete('remove-follow/{user: username}',[FollowController::class, 'removeFollow']);
 
 //User related routes
 Route::get('/', [UserController::class, 'showCorrectHomepage'])->name('login');
