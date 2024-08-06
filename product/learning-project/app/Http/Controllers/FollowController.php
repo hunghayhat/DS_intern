@@ -11,12 +11,12 @@ class FollowController extends Controller
     public function createFollow(User $user) {
         $newFollow = new Follow;
         $newFollow-> user_id = auth()->user()->id;
-        $newFollow->followedid = $user->id;
+        $newFollow->followeduser = $user->id;
         $newFollow->save();
 
     }
 
-    public function deleteFollow() {
+    public function removeFollow() {
         
     }
 }
