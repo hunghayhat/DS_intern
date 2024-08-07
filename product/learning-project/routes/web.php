@@ -34,7 +34,7 @@ Route::post('create-follow/{user:username}', [FollowController::class, 'createFo
 Route::delete('remove-follow/{user:username}', [FollowController::class, 'removeFollow']);
 
 // User related routes
-Route::get('/register', [UserController::class, 'register']);
+Route::post('/register', [UserController::class, 'register']);
 Route::post('/login', [UserController::class, 'login']);
 Route::post('/logout', [UserController::class, 'logout']);
 

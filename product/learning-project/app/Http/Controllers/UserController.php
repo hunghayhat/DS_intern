@@ -49,7 +49,7 @@ class UserController extends Controller
     {
         $currentlyFollowing = 0;
 
-        if (auth()->check) {
+        if (auth()->check()) {
             $currentlyFollowing = Follow::where(
                 [
                     ['user_id', '=', auth()->user()->id],
