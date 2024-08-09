@@ -10,9 +10,17 @@ use App\Http\Controllers\Controller;
 use Intervention\Image\ImageManager;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Drivers\Gd\Driver;
+use App\Repositories\UserRepositoryInterface;
 
 class UserController extends Controller
 {
+    protected $userRepository;
+
+    public function __construct(UserRepositoryInterface $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
+
     public function storeAvatar(Request $request)
     {
         $request->validate([
@@ -34,6 +42,8 @@ class UserController extends Controller
         $user->avatar = $filename;
         $user->save();
 
+        $this->userRepository->updateAvatar($user, $filename);
+
         if ($oldAvatar != "/fallback-avatar.jpg") {
             Storage::delete(str_replace("/storage/", "public/", $oldAvatar));
         }
@@ -47,19 +57,25 @@ class UserController extends Controller
 
     public function profile(User $user)
     {
-        $currentlyFollowing = 0;
+        $currentlyFollowing = $this->userRepository->followStatus(auth()->user(), $user);
 
-        if (auth()->check()) {
-            $currentlyFollowing = Follow::where(
-                [
-                    ['user_id', '=', auth()->user()->id],
-                    ['followeduser', '=', $user->id]
-                ]
-            )->count();
-        }
+        // if (auth()->check()) {
+        //     $currentlyFollowing = Follow::where(
+        //         [
+        //             ['user_id', '=', auth()->user()->id],
+        //             ['followeduser', '=', $user->id]
+        //         ]
+        //     )->count();
+        // }
 
 
-        return view('profile-posts', ['currentlyFollowing'=> $currentlyFollowing, 'avatar' => $user->avatar, 'username' => $user->username, 'posts' => $user->posts()->latest()->get(), 'postCount' => $user->posts()->count()]);
+        return view('profile-posts', [
+            'currentlyFollowing' => $currentlyFollowing,
+            'avatar' => $user->avatar,
+            'username' => $user->username,
+            'posts' => $user->posts()->latest()->get(),
+            'postCount' => $user->posts()->count()
+        ]);
     }
 
     public function logout()
