@@ -24,13 +24,14 @@ class User extends Authenticatable
         'password',
     ];
 
-    protected function avatar(): Attribute {
-        return Attribute::make(get: function($value) {
-            return $value ? '/storage/avatars/'. $value : '/fallback-avatar.jpg';
+    protected function avatar(): Attribute
+    {
+        return Attribute::make(get: function ($value) {
+            return $value ? '/storage/avatars/' . $value : '/fallback-avatar.jpg';
         });
     }
-        
-    
+
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -54,8 +55,18 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    public function followers()
+    {
+        return $this->hasMany(Follow::class, 'followeduser');
+    }
 
-    public function posts() {
+    public function followingTheseUsers()
+    {
+        return $this->hasMany(Follow::class, 'user_id');
+    }
+
+    public function posts()
+    {
         return $this->hasMany(Post::class, 'user_id');
     }
 }
