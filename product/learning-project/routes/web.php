@@ -23,6 +23,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('/post/{post}', [PostController::class, 'update']);
     Route::get('/post/{post}/edit', [PostController::class, 'edit']);
 
+    Route::get('search/{term}',[PostController::class, 'search']);
+
     // Profile related routes:
     Route::get('/profile/{user:username}', [UserController::class, 'profile']);
     Route::get('/profile/{user:username}/followers', [UserController::class, 'profileFollowers']);

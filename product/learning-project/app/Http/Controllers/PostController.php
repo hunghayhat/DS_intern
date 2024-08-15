@@ -10,6 +10,12 @@ use Symfony\Contracts\Service\Attribute\Required;
 
 class PostController extends Controller
 {
+    public function search($term) {
+        $posts = Post::search($term)->get();
+        $posts->load('user:id,username,avatar');
+        return $posts;
+    }
+
     public function delete(Request $request, Post $post) {
         if($request->user()->cannot('delete', $post)) {
             return('You can not do that!');
