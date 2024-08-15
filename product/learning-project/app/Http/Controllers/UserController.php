@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\OurExampleEvent;
 use App\Models\User;
 use App\Models\Follow;
 use Illuminate\Http\Request;
@@ -56,7 +57,8 @@ class UserController extends Controller
         return view('avatar-form');
     }
 
-    private function getSharedData ($user) {
+    private function getSharedData($user)
+    {
         $currentlyFollowing = $this->userRepository->followStatus(auth()->user(), $user);
 
         View::share('sharedData', [
@@ -65,7 +67,7 @@ class UserController extends Controller
             'username' => $user->username,
             'postCount' => $user->posts()->count(),
             'followerCount' => $user->followers()->count(),
-            'followingCount' => $user-> followingTheseUsers()->count()
+            'followingCount' => $user->followingTheseUsers()->count()
         ]);
     }
 
@@ -95,6 +97,7 @@ class UserController extends Controller
 
     public function logout()
     {
+        event(new OurExampleEvent(['username' => auth()->user()->username, 'action' => 'logout']));
         auth()->logout();
         return redirect('/')->with('success', 'Logged out!');
     }
@@ -102,7 +105,7 @@ class UserController extends Controller
     public function showCorrectHomepage()
     {
         if (auth()->check()) {
-            return view('homepage-feed', ['posts' =>auth()->user()->feedPosts()->latest()->paginate(4)]);
+            return view('homepage-feed', ['posts' => auth()->user()->feedPosts()->latest()->paginate(4)]);
         } else return view('homepage');
     }
 
@@ -135,6 +138,7 @@ class UserController extends Controller
             ]
         )) {
             $request->session()->regenerate();
+            event(new OurExampleEvent(['username' => auth()->user()->username, 'action' => 'login']));
             return redirect('/')->with('success', 'You have succeffully logged in!');
         } else {
             return redirect('/')->with('failure', 'Invalid login.');
