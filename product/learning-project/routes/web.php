@@ -1,11 +1,15 @@
 <?php
 
+use App\Events\ChatMessage;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
+use App\Http\Middleware\MustBeLoggedIn;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\FollowController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Middleware\MustBeLoggedIn;
+use Illuminate\Support\Facades\Broadcast;
 
 Route::get('/', [UserController::class, 'showCorrectHomepage'])->name('login');
 
@@ -23,7 +27,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('/post/{post}', [PostController::class, 'update']);
     Route::get('/post/{post}/edit', [PostController::class, 'edit']);
 
-    Route::get('search/{term}',[PostController::class, 'search']);
+    Route::get('search/{term}', [PostController::class, 'search']);
 
     // Profile related routes:
     Route::get('/profile/{user:username}', [UserController::class, 'profile']);
@@ -45,4 +49,22 @@ Route::post('/logout', [UserController::class, 'logout']);
 Route::get('/admins-only', function () {
     return 'Only admins can do that';
 })->middleware('can:visitAdminPages');
+
+//Chat route
+Route::post('/send-chat-message', function (Request $request) {
+    $formFields = $request->validate([
+        'textvalue' => 'required'
+    ]);
+
+    if (!trim(strip_tags($formFields['textvalue']))) {
+        return response()->noContent();
+    }
+
+    broadcast(new ChatMessage([
+        'username' => auth()->user()->username,
+        'textvalue' => strip_tags($request->textvalue),
+        'avatar' => auth()->user()->avatar
+    ]))->toOthers();
+    return response()->noContent();
+});
 
