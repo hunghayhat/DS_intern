@@ -3,10 +3,15 @@ import './bootstrap';
 import Alpine from 'alpinejs';
 import Search from './live-search';
 import Chat from './chat';
+import Profile from './profile';
 
 window.Alpine = Alpine;
 
 Alpine.start();
+
+if (document.querySelector(".profile-nav")) {
+    new Profile();
+}
 
 if (document.querySelector(".header-search-icon")) {
     new Search();
