@@ -11,6 +11,7 @@ use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\View;
 use Intervention\Image\ImageManager;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Drivers\Gd\Driver;
 use App\Repositories\UserRepositoryInterface;
@@ -127,11 +128,15 @@ class UserController extends Controller
             return view('homepage-feed', ['posts' => auth()->user()->feedPosts()->latest()->paginate(4)]);
         } else
             if (Cache::has('postCount')) {
-                $postCount = Cache::get();
-                
-            }
-            else
-            return view('homepage', ['postCount' => Post::count()]);
+            $postCount = Cache::get('postCount');
+        } else {
+            $postCount = Cache::remember('postCount', 20, function() {
+                sleep(5);
+                return Post::count();
+            });
+            Cache::put('postCount', $postCount, 20);
+        }
+        return view('homepage', ['postCount' => $postCount]);
     }
 
     public function register(Request $request)
