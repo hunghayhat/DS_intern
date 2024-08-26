@@ -29,7 +29,6 @@ class SendNewPostEmail implements ShouldQueue
      */
     public function handle(): void
     {
-        Mail::to($this->incoming['sendTo'])->send(new NewPostEmail(['name'=> $this->incoming['name'], 'title'=>$this->incoming['title']]));
-
+        Mail::to($this->incoming['sendTo'])->send(new NewPostEmail(['name' => $this->incoming['name'], 'title' => $this->incoming['title']]));
     }
 }
