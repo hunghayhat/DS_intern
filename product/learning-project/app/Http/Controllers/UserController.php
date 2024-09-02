@@ -131,7 +131,6 @@ class UserController extends Controller
             $postCount = Cache::get('postCount');
         } else {
             $postCount = Cache::remember('postCount', 20, function() {
-                sleep(5);
                 return Post::count();
             });
             Cache::put('postCount', $postCount, 20);
