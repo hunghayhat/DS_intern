@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Models\User;
-use App\Models\Follow;
 use Illuminate\Http\Request;
 use App\Events\OurExampleEvent;
 use Illuminate\Validation\Rule;
@@ -27,6 +26,7 @@ class UserController extends Controller
 
     public function storeAvatar(Request $request)
     {
+        
         $request->validate([
             'avatar' => 'required|image|max:90000'
         ]);
