@@ -12,7 +12,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 
 class SendNewPostEmail implements ShouldQueue
 {
-    use Queueable;
+    use Queueable, Dispatchable, InteractsWithQueue, SerializesModels;
 
     public $incoming;
 

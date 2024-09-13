@@ -8,4 +8,6 @@ interface UserRepositoryInterface {
     public function create(array $data): User;
     public function updateAvatar(User $user, string $filename): void;
     public function followStatus (User $currentUser, User $targetUser): bool;
+    public function update(User $user, array $data): bool;
+    public function delete(User $user): bool;
 }
